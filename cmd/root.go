@@ -12,7 +12,7 @@ var (
 		Short: "A very basic CLI tool for taking notes",
 		Long:  `A very basic CLI tool that implements CRUD operations, written in Golang`,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Welocme to notesapp!")
+			fmt.Println("Welocme to noteapp!")
 		},
 	}
 )

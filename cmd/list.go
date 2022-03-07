@@ -29,7 +29,7 @@ var listCmd = &cobra.Command{
 		// Printing notes
 		fmt.Printf("\nYour notes are: \n\n")
 		for _, m := range res {
-			fmt.Printf("-> %s: %s\n", m["title"], m["body"])
+			fmt.Printf("-> %s: %s\n", m.Title, m.Body)
 		}
 		fmt.Printf("\n")
 	},

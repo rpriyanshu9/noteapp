@@ -8,7 +8,12 @@ import (
 	"path/filepath"
 )
 
-func LoadNotes() []map[string]string {
+type Note struct {
+	Title string `json:"title,omitempty"`
+	Body  string `json:"body,omitempty"`
+}
+
+func LoadNotes() []*Note {
 
 	// Building path to the notes.json file
 	pwd, _ := os.Getwd()
@@ -18,7 +23,7 @@ func LoadNotes() []map[string]string {
 	jsonFile, err := os.Open(path)
 	if err != nil {
 		fmt.Println(err)
-		return make([]map[string]string, 0)
+		return make([]*Note, 0)
 	}
 
 	// Closing the file in the end
@@ -26,13 +31,13 @@ func LoadNotes() []map[string]string {
 
 	// Getting slice of notes from file
 	byteValue, _ := ioutil.ReadAll(jsonFile)
-	var result []map[string]string
+	var result []*Note
 	json.Unmarshal([]byte(byteValue), &result)
 
 	return result
 }
 
-func SaveNotes(notes []map[string]string) error {
+func SaveNotes(notes []*Note) error {
 
 	// Building path to the notes.json file
 	pwd, _ := os.Getwd()
@@ -45,9 +50,9 @@ func SaveNotes(notes []map[string]string) error {
 	}
 
 	// Writing to json file
-	err2 := ioutil.WriteFile(path, jsonString, os.ModePerm)
-	if err2 != nil {
-		return err2
+	err = ioutil.WriteFile(path, jsonString, os.ModePerm)
+	if err != nil {
+		return err
 	}
 
 	return nil

@@ -7,8 +7,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var addTitle, addBody = "", ""
+
 func init() {
 	rootCmd.AddCommand(addCmd)
+	addCmd.Flags().StringVar(&addTitle, "title", "", "title of the todo note")
+	addCmd.Flags().StringVar(&addBody, "body", "", "body of the todo note")
+	addCmd.MarkFlagRequired("title")
 }
 
 var addCmd = &cobra.Command{
@@ -18,21 +23,21 @@ var addCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 
 		// Checking for any errors. Specifically the "too few/too many arguments" error
-		if err := addErrFunc(args); err != nil {
-			return err
-		}
+		// if err := addErrFunc(args); err != nil {
+		// 	return err
+		// }
 
 		// Getting title and body of the note from the arguments provided
-		title, body := args[0], args[1]
+		// title, body := args[0], args[1]
 
 		// Loading existing notes from the note.json file
 		notes := utils.LoadNotes()
 
 		// Checking if any note with same title exists
 		// If it does => updating that note
-		for _, m := range notes {
-			if m["title"] == title {
-				m["body"] = body
+		for _, note := range notes {
+			if note.Title == addTitle {
+				note.Body = addBody
 				err2 := utils.SaveNotes(notes)
 				if err2 != nil {
 					return err2
@@ -43,17 +48,18 @@ var addCmd = &cobra.Command{
 		}
 
 		// Making a new note
-		newNote := make(map[string]string)
-		newNote["title"] = title
-		newNote["body"] = body
+		newNote := utils.Note{
+			Title: addTitle,
+			Body:  addBody,
+		}
 
 		// Appending to existing notes
-		notes = append(notes, newNote)
+		notes = append(notes, &newNote)
 
 		// Saving updated notes
-		err2 := utils.SaveNotes(notes)
-		if err2 != nil {
-			return err2
+		err := utils.SaveNotes(notes)
+		if err != nil {
+			return err
 		}
 
 		fmt.Println("Note added successfully")
@@ -63,9 +69,9 @@ var addCmd = &cobra.Command{
 }
 
 // Checking if the number of arguments provided are as expected
-func addErrFunc(args []string) error {
-	if len(args) < 2 || len(args) > 2 {
-		return fmt.Errorf("2 arguments expected! title & body")
-	}
-	return nil
-}
+// func _(args []string) error {
+// 	if len(args) < 2 || len(args) > 2 {
+// 		return fmt.Errorf("2 arguments expected! title & body")
+// 	}
+// 	return nil
+// }

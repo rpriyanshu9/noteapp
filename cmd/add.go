@@ -35,9 +35,9 @@ var addCmd = &cobra.Command{
 
 		// Checking if any note with same title exists
 		// If it does => updating that note
-		for _, note := range notes {
-			if note.Title == addTitle {
-				note.Body = addBody
+		for i := range notes {
+			if notes[i].Title == addTitle {
+				notes[i].Body = addBody
 				err2 := utils.SaveNotes(notes)
 				if err2 != nil {
 					return err2
@@ -54,7 +54,7 @@ var addCmd = &cobra.Command{
 		}
 
 		// Appending to existing notes
-		notes = append(notes, &newNote)
+		notes = append(notes, newNote)
 
 		// Saving updated notes
 		err := utils.SaveNotes(notes)

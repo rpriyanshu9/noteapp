@@ -13,7 +13,7 @@ type Note struct {
 	Body  string `json:"body,omitempty"`
 }
 
-func LoadNotes() []*Note {
+func LoadNotes() []Note {
 
 	// Building path to the notes.json file
 	pwd, _ := os.Getwd()
@@ -23,7 +23,7 @@ func LoadNotes() []*Note {
 	jsonFile, err := os.Open(path)
 	if err != nil {
 		fmt.Println(err)
-		return make([]*Note, 0)
+		return make([]Note, 0)
 	}
 
 	// Closing the file in the end
@@ -31,13 +31,13 @@ func LoadNotes() []*Note {
 
 	// Getting slice of notes from file
 	byteValue, _ := ioutil.ReadAll(jsonFile)
-	var result []*Note
+	var result []Note
 	json.Unmarshal([]byte(byteValue), &result)
 
 	return result
 }
 
-func SaveNotes(notes []*Note) error {
+func SaveNotes(notes []Note) error {
 
 	// Building path to the notes.json file
 	pwd, _ := os.Getwd()

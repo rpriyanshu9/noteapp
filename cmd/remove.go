@@ -42,7 +42,7 @@ var removeCmd = &cobra.Command{
 		notes := utils.LoadNotes()
 
 		// Temporary empty list of notes
-		result := []*utils.Note{}
+		result := []utils.Note{}
 
 		// Appending every non matching note to this new result slice
 		for _, m := range notes {
